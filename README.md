@@ -4,6 +4,10 @@
 
 A comprehensive FHEVM example demonstrating privacy-preserving income verification using Fully Homomorphic Encryption (FHE) on the blockchain. This project showcases key FHEVM concepts including encryption, access control, user decryption, and confidential computations.
 
+Video :https://streamable.com/orvycd  demo2.mp4 demo1.mp4
+
+Live :https://private-income-verification-fhevm-e.vercel.app/
+
 ## 📋 Quick Start
 
 ### Installation
