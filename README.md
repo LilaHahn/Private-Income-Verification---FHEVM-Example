@@ -184,7 +184,7 @@ struct IncomeVerification {
 - Generating documentation
 - Key FHEVM concepts in action
 
-**Video file**: `PrivateIncomeVerification.mp4`
+**Video file**: `demo1.mp4 demo2.mp4`
 
 ## 🚀 Automation Tools
 
