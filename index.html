@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Income Verification Platform</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🔐 Private Income Verification</h1>
+            <p class="subtitle">Secure Encrypted Income Verification on Blockchain</p>
+            <div class="wallet-section">
+                <button id="connectWallet" class="btn btn-primary">Connect Wallet</button>
+                <div id="walletInfo" class="wallet-info hidden">
+                    <span class="wallet-address" id="walletAddress"></span>
+                    <span class="network-badge" id="networkBadge"></span>
+                </div>
+            </div>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="request">Request Verification</button>
+            <button class="tab-btn" data-tab="manage">My Verifications</button>
+            <button class="tab-btn" data-tab="authority">Authority Panel</button>
+            <button class="tab-btn" data-tab="tools">Verification Tools</button>
+        </nav>
+
+        <main class="content">
+            <!-- Request Verification Tab -->
+            <section id="request" class="tab-pane active">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Submit Verification Request</h2>
+                    </div>
+                    <div class="card-body">
+                        <form id="requestForm">
+                            <div class="form-group">
+                                <label for="incomeLevel">Income Level (0-255)</label>
+                                <input type="number" id="incomeLevel" class="form-control" min="0" max="255" required>
+                                <small class="form-text">Enter your encrypted income level classification</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="employmentMonths">Employment Duration (Months)</label>
+                                <input type="number" id="employmentMonths" class="form-control" min="1" max="255" required>
+                                <small class="form-text">Total months of continuous employment</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="documentHash">Document Hash</label>
+                                <input type="text" id="documentHash" class="form-control" placeholder="0x..." required>
+                                <small class="form-text">Hash of supporting employment documents</small>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block">Submit Request</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Contract Statistics</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-label">Total Verifications</div>
+                                <div class="stat-value" id="totalVerifications">0</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Active Verifications</div>
+                                <div class="stat-value" id="activeVerifications">0</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Pending Requests</div>
+                                <div class="stat-value" id="pendingRequests">0</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Total Requests</div>
+                                <div class="stat-value" id="totalRequests">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Manage Verifications Tab -->
+            <section id="manage" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>My Verification Requests</h2>
+                    </div>
+                    <div class="card-body">
+                        <button id="loadRequests" class="btn btn-secondary mb-3">Load My Requests</button>
+                        <div id="requestsList" class="list-container"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>My Approved Verifications</h2>
+                    </div>
+                    <div class="card-body">
+                        <button id="loadVerifications" class="btn btn-secondary mb-3">Load My Verifications</button>
+                        <div id="verificationsList" class="list-container"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Authority Panel Tab -->
+            <section id="authority" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Process Verification Request</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="authRequestId">Request ID</label>
+                            <input type="number" id="authRequestId" class="form-control" min="0" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="employerHash">Employer Hash</label>
+                            <input type="text" id="employerHash" class="form-control" placeholder="Employer information hash" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Approval Decision</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="approval" value="true" checked>
+                                    <span>Approve</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="approval" value="false">
+                                    <span>Reject</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button id="processRequest" class="btn btn-primary btn-block">Process Request</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Authority Information</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-item">
+                            <strong>Current Authority:</strong>
+                            <div id="authorityAddress">Loading...</div>
+                        </div>
+                        <div class="info-item">
+                            <strong>Pending Requests Count:</strong>
+                            <div id="pendingCount">Loading...</div>
+                        </div>
+                        <button id="refreshAuthInfo" class="btn btn-secondary mt-3">Refresh Information</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Verification Tools Tab -->
+            <section id="tools" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Verify Income Threshold</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="verifyId">Verification ID</label>
+                            <input type="number" id="verifyId" class="form-control" min="0" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="thresholdLevel">Required Level (0-255)</label>
+                            <input type="number" id="thresholdLevel" class="form-control" min="0" max="255" required>
+                        </div>
+
+                        <button id="checkThreshold" class="btn btn-primary btn-block">Check Threshold</button>
+                        <div id="thresholdResult" class="result-box mt-3"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Compare Income Levels</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="compareId1">Verification ID 1</label>
+                            <input type="number" id="compareId1" class="form-control" min="0" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="compareId2">Verification ID 2</label>
+                            <input type="number" id="compareId2" class="form-control" min="0" required>
+                        </div>
+
+                        <button id="compareIncomes" class="btn btn-primary btn-block">Compare Incomes</button>
+                        <div id="compareResult" class="result-box mt-3"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Get Verification Information</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="infoId">Verification ID</label>
+                            <input type="number" id="infoId" class="form-control" min="0" required>
+                        </div>
+
+                        <button id="getInfo" class="btn btn-secondary btn-block">Get Information</button>
+                        <div id="infoResult" class="result-box mt-3"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Deactivate Verification</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="deactivateId">Verification ID</label>
+                            <input type="number" id="deactivateId" class="form-control" min="0" required>
+                        </div>
+
+                        <button id="deactivateBtn" class="btn btn-danger btn-block">Deactivate Verification</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <div id="statusMessage" class="status-message"></div>
+
+        <footer class="footer">
+            <p>Private Income Verification Platform - Powered by Fully Homomorphic Encryption</p>
+            <p class="contract-address">Contract: 0x56CDd69fCe06dB3E2F9552A864BF0e2e258A56Cd</p>
+        </footer>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>
