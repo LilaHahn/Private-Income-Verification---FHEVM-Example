@@ -1,0 +1,10 @@
+node_modules
+artifacts
+cache
+coverage
+dist
+typechain-types
+docs
+.env
+.env.local
+.env.*.local
