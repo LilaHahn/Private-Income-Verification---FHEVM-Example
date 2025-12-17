@@ -4,9 +4,36 @@
 
 A comprehensive FHEVM example demonstrating privacy-preserving income verification using Fully Homomorphic Encryption (FHE) on the blockchain. This project showcases key FHEVM concepts including encryption, access control, user decryption, and confidential computations.
 
-Video :https://streamable.com/orvycd  demo2.mp4 demo1.mp4
+## 🎬 Demo & Live Links
 
-Live :https://private-income-verification-fhevm-e.vercel.app/
+- **Video Demo**: https://youtu.be/KPTs7gLzbUg
+- **Live Application**: https://private-income-verification-fhevm-e.vercel.app/
+- **Additional Videos**: See `demo1.mp4` and `demo2.mp4` in repository
+
+## 📚 Documentation
+
+| Guide | Description |
+|-------|-------------|
+| [Developer Guide](./DEVELOPER_GUIDE.md) | How to add new examples and maintain the project |
+| [Automation Guide](./AUTOMATION_GUIDE.md) | Complete documentation of automation tools |
+| [Examples Overview](./EXAMPLES.md) | Guide to examples and how to create more |
+| [Submission Details](./SUBMISSION.md) | Bounty submission information |
+| [Generated Docs](./docs/) | Auto-generated GitBook documentation |
+| [Completion Report](./COMPLETION_REPORT.md) | Project status and deliverables |
+
+## 🎯 Bounty Track Deliverables
+
+| Deliverable | Status | Location |
+|-------------|--------|----------|
+| Base Template | ✅ Complete | `base-template/` |
+| Automation Scripts | ✅ Complete | `scripts/` |
+| Example Contracts | ✅ Complete | `contracts/` |
+| Comprehensive Tests | ✅ Complete | `test/` |
+| Documentation Generator | ✅ Complete | `scripts/generate-docs.ts` |
+| Developer Guide | ✅ Complete | `DEVELOPER_GUIDE.md` |
+| Automation Tools | ✅ Complete | See AUTOMATION_GUIDE.md |
+| Demo Videos | ✅ Complete | 3 videos included |
+| Live Deployment | ✅ Complete | Vercel deployment |
 
 ## 📋 Quick Start
 
